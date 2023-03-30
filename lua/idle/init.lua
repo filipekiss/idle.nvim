@@ -5,23 +5,27 @@ M.version = "0.0.0"
 local defaults = {
 	-- colorscheme can be a string like `habamax` or a function that will load the colorscheme
 	colorscheme = nil,
-	namespace = "config",
+	-- the name of the folder where your custom config files are located. Default
+	-- value is `user` and will require modules from `lua/user`
+	namespace = "user",
+	-- enable idle.nvim debug mode
+	debug = false,
 }
 
-local options
+M.options = {}
 
 function M.setup(opts)
-	options = vim.tbl_deep_extend("force", defaults, opts or {})
-	options.opts = opts
+	M.options = vim.tbl_deep_extend("force", defaults, opts or {})
+	M.options.opts = opts
 	-- load autocmds and keymaps
 
 	-- apply the colorscheme if set
-	if options.colorscheme then
+	if M.options.colorscheme then
 		require("lazy.core.util").try(function()
-			if type(options.colorscheme) == "function" then
-				options.colorscheme()
+			if type(M.options.colorscheme) == "function" then
+				M.options.colorscheme()
 			else
-				vim.cmd.colorscheme(options.colorscheme)
+				vim.cmd.colorscheme(M.options.colorscheme)
 			end
 		end, {
 			msg = "Could not load your colorscheme",
@@ -32,16 +36,22 @@ function M.setup(opts)
 		})
 	end
 
-	M.load(options.namespace, "autocmds")
-	M.load(options.namespace, "keymaps")
-	M.load(options.namespace, "options")
+
+	M.load(M.options.namespace, "autocmds")
+	M.load(M.options.namespace, "keymaps")
+	M.load(M.options.namespace, "options")
+  M.load(M.options.namespace, "commands")
+
 end
 
 function M.load(namespace, name)
-	local Util = require("lazy.core.util")
+	local Lazy = require("lazy.core.util")
+	local Util = require("idle.util")
 	local function _load(mod)
-		Util.try(function()
+		Lazy.try(function()
+			Util.debug("Looking for module " .. mod)
 			require(mod)
+			Util.debug("Found module " .. mod)
 		end, {
 			msg = "Failed loading " .. mod,
 			on_error = function(msg)
