@@ -8,32 +8,24 @@ idle.nvim is a minimal neovim configuration framework built on top of lazy.nvim.
 
 I migrated my old neovim configuration to a full lua setup a while ago, but I
 was never quite happy with it. I started looking into pre-made configurations,
-like [AstroNvim](https://astronvim.com/),
-[CosmicNvim](https://github.com/CosmicNvim/CosmicNvim),
-[NvChad](https://nvchad.com/) and so many others, but it was always hard for me
-to "buy in" the whole setup. I have been using vim for a few years now, so I
-have a lot of quirks that I'm used to. I don't think it's efficient to run a
-full configuration and then disable a lot of stuff that I won't use, so I set
-out to create a configuration framework. It didn't quite work out as I wanted,
-so I kinda just stopped working on it.
+like [AstroNvim](https://astronvim.com/), [CosmicNvim](https://github.com/CosmicNvim/CosmicNvim), [NvChad](https://nvchad.com/) and so many others, but it was always
+hard for me to "buy in" the whole setup. I have been using vim for a few years
+now, so I have a lot of quirks that I'm used to. I don't think it's efficient to
+run a full configuration and then disable a lot of stuff that I won't use, so I
+set out to create a configuration framework. It didn't quite work out as I
+wanted, so I kinda just stopped working on it.
 
-A few weeks ago, I was introduced to
-[lazy.nvim](https://github.com/folke/lazy.nvim/), a plugin manager for Neovim
+A few weeks ago, I was introduced to [lazy.nvim](https://github.com/folke/lazy.nvim/), a plugin manager for Neovim
 which seemed to be a better alternative to what I was using at the time. With
-that, I also got word of [LazyVim](https://github.com/LazyVim/LazyVim), which is
-a pre-made setup built using lazy.nvim as a base. It seemed that I had found a
-great place to start with my setup, but LazyVim comes with a lot of things
-setup. It was really close, but not exactly what I wanted. So I gave up and went
-back to my old configuration.
+that, I also got word of [LazyVim](https://github.com/LazyVim/LazyVim), which is a pre-made setup built using lazy.nvim
+as a base. It seemed that I had found a great place to start with my setup, but
+LazyVim comes with a lot of things setup. It was really close, but not exactly
+what I wanted. So I gave up and went back to my old configuration.
 
 So, one day, my LSP configuration breaks and I decide that I will take this
 chance to replace my plugin manager with lazy.nvim. And when I started doing
 that, I realized that lazy.nvim was the perfect plugin manager to build my
-configuration framework on top. That's when I came up with idle.nvim.
-
-you can think of idle.nvim as a slimmed down version of LazyVim: all the quality
-of life things that make LazyVim great, but you need to bring your own
-configuration
+configuration framework on top.
 
 ### how it works
 
@@ -50,9 +42,35 @@ for example, it will autoload some files in `lua/user/` folder (the files will
  - lua/user/options.lua
  - lua/user/commands.lua
 
+> ℹ️  You can use any folder other than `user` by using the `namespace` option when
+configuring `idle.nvim`.
+
+In these files (and any files loaded after), you can use the global `Idle`. It
+has some properties and methods that can be used to configure neovim.
+
+##### `Idle.namespace`
+
+> default value: "user"
+
+The namespace used to load configuration files. This can be set during
+`idle.nvim` initialization.
+
+##### `Idle.load()`
+
+> Idle.load("module_name", { namespace = Idle.namepsace, silent = false })
+
+This is a wrapper around Lua's default `require` used to load modules from the
+default namespace. The main difference is that if the module does not exists you
+won't see a huge error message. The second argument accepts a table with two options:
+`namespace`, which by default is the namespace setup during `idle.nvim`
+initialization. `silent` will control if the function should notify if the
+module is not found or not. You can ommit the second argument altogether if you
+want to use the default values.
+
+
 ### roadmap
 
- - [ ] watch lua/user/* files and reload them when they are saved
+ - [ ] watch lua/<namespace>/* files and reload them when they are saved
  - [ ] write usage guide
  - [ ] write proper docs
  - [ ] load shareable configurations

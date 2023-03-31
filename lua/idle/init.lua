@@ -12,6 +12,30 @@ local defaults = {
 	debug = false,
 }
 
+local function setup_global_idle()
+	local readOnly = require("idle.util").readOnly
+	_G.Idle = readOnly({
+		namespace = M.options.namespace,
+		load = function(name, opts)
+			local defaults = {
+				namespace = Idle.namespace,
+			}
+			local options = vim.tbl_deep_extend("force", defaults, opts or {})
+			local namespace = options.namespace
+			options.namespace = nil
+			local Util = require("idle.util")
+			local mod = namespace .. "." .. name
+			Util.debug("Looking for module " .. mod)
+			local loaded_module = Util.safe_require(mod, options or {})
+			if not loaded_module then
+				return nil
+			end
+			Util.debug("Found module " .. mod)
+			return loaded_module
+		end,
+	})
+end
+
 M.options = {}
 
 function M.setup(opts)
@@ -36,32 +60,15 @@ function M.setup(opts)
 		})
 	end
 
-	M.load(M.options.namespace, "autocmds")
-	M.load(M.options.namespace, "keymaps")
-	M.load(M.options.namespace, "options")
-	M.load(M.options.namespace, "commands")
-end
+	-- setup global Idle now so it can be used in the files that will be loaded
+	-- after
+	setup_global_idle()
 
-function M.load(namespace, name)
-	local Lazy = require("lazy.core.util")
-	local Util = require("idle.util")
-	local function _load(mod)
-		Lazy.try(function()
-			Util.debug("Looking for module " .. mod)
-			require(mod)
-			Util.debug("Found module " .. mod)
-		end, {
-			msg = "Failed loading " .. mod,
-			on_error = function(msg)
-				local info = require("lazy.core.cache").find(mod)
-				if info == nil or (type(info) == "table" and #info == 0) then
-					return
-				end
-				Util.error(msg)
-			end,
-		})
-	end
-	_load(namespace .. "." .. name)
+	local load_options = { silent = true }
+	Idle.load("autocmds", load_options)
+	Idle.load("keymaps", load_options)
+	Idle.load("options", load_options)
+	Idle.load("commands", load_options)
 end
 
 setmetatable(M, {
