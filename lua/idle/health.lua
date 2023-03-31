@@ -38,14 +38,16 @@ function M.check()
 
 	local opts = require("idle").opts
 	if opts.namespace then
-message = ("Using custom config namespace (" .. options.namespace .. ")")
+		message = (
+			"Using custom config namespace ("
+			.. options.namespace
+			.. ")"
+		)
 	else
-	local idle = require("idle")
-	message = ("Using default config namespace (" .. idle.namespace .. ")")
+		local idle = require("idle")
+		message = ("Using default config namespace (" .. idle.namespace .. ")")
 	end
 	vim.health.report_info(message)
-
-
 end
 
 return M
