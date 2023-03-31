@@ -36,12 +36,10 @@ function M.setup(opts)
 		})
 	end
 
-
 	M.load(M.options.namespace, "autocmds")
 	M.load(M.options.namespace, "keymaps")
 	M.load(M.options.namespace, "options")
-  M.load(M.options.namespace, "commands")
-
+	M.load(M.options.namespace, "commands")
 end
 
 function M.load(namespace, name)

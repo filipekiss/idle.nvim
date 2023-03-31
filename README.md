@@ -48,6 +48,7 @@ for example, it will autoload some files in `lua/user/` folder (the files will
  - lua/user/autocmds.lua
  - lua/user/keymaps.lua
  - lua/user/options.lua
+ - lua/user/commands.lua
 
 ### roadmap
 
