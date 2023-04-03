@@ -3,11 +3,21 @@ local M = {}
 M.version = "0.0.0"
 
 local defaults = {
-	-- colorscheme can be a string like `habamax` or a function that will load the colorscheme
+	-- colorscheme can be a string with the colorscheme name or a function that
+	-- will load the colorscheme use this after adding the coloscheme specs to
+	-- your configuration
 	colorscheme = nil,
 	-- the name of the folder where your custom config files are located. Default
 	-- value is `user` and will require modules from `lua/user`
 	namespace = "user",
+	-- the files that will be loaded from the namespace folder above. They will be
+	-- loaded in this order
+	source = {
+		"options",
+		"keymaps",
+		"commands",
+		"autocmds",
+	},
 	-- enable idle.nvim debug mode
 	debug = false,
 }
@@ -65,10 +75,10 @@ function M.setup(opts)
 	setup_global_idle()
 
 	local load_options = { silent = true }
-	Idle.load("autocmds", load_options)
-	Idle.load("keymaps", load_options)
-	Idle.load("options", load_options)
-	Idle.load("commands", load_options)
+	for _, file in ipairs(M.options.source) do
+		Idle.load(file, load_options)
+	end
+
 end
 
 setmetatable(M, {
