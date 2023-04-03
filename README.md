@@ -37,9 +37,9 @@ setup a little more pleasant.
 for example, it will autoload some files in `lua/user/` folder (the files will
   be loaded in this order):
 
- - lua/user/autocmds.lua
- - lua/user/keymaps.lua
  - lua/user/options.lua
+ - lua/user/keymaps.lua
+ - lua/user/autocmds.lua
  - lua/user/commands.lua
 
 > ℹ️  You can use any folder other than `user` by using the `namespace` option when
@@ -64,8 +64,32 @@ default namespace. The main difference is that if the module does not exists you
 won't see a huge error message. The second argument accepts a table with two options:
 `namespace`, which by default is the namespace setup during `idle.nvim`
 initialization. `silent` will control if the function should notify if the
-module is not found or not. You can ommit the second argument altogether if you
+module is not found or not. You can omit the second argument altogether if you
 want to use the default values.
+
+### Configuration
+
+```lua
+{
+	-- colorscheme can be a string with the colorscheme name or a function that
+	-- will load the colorscheme use this after adding the coloscheme specs to
+	-- your configuration
+	colorscheme = nil,
+	-- the name of the folder where your custom config files are located. Default
+	-- value is `user` and will require modules from `lua/user`
+	namespace = "user",
+	-- the files that will be loaded from the namespace folder above. They will be
+	-- loaded in this order
+	source = {
+		"options",
+		"keymaps",
+		"commands",
+		"autocmds",
+	},
+	-- enable idle.nvim debug mode
+	debug = false,
+}
+```
 
 
 ### Configuration
