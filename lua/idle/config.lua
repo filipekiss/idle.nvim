@@ -1,32 +1,37 @@
----@type IdleConfig
 local M = {}
 
----@type IdleConfigOptions
 local defaults = {
-	colorscheme = "habamax",
+	-- colorscheme can be a string with the colorscheme name or a function that
+	-- will load the colorscheme use this after adding the coloscheme specs to
+	-- your configuration
+	colorscheme = 'habamax',
+	-- the name of the folder where your custom config files are located. Default
+	-- value is `user` and will require modules from `lua/user`
 	namespace = "user",
+	-- the files that will be loaded from the namespace folder above. They will be
+	-- loaded in this order
 	source = {
 		"options",
 		"keymaps",
 		"commands",
 		"autocmds",
 	},
-	debug = vim.env.IDLE_DEBUG or false,
+	-- enable idle.nvim debug mode
+	debug = false,
 }
 
----@param options IdleConfigOptions
+
 local function setup_global_idle(options)
 	local readOnly = require("idle.util").readOnly
-	local recursive_table = require("idle.helpers.table").recursive_table
 
 	_G.Idle = readOnly({
 		namespace = options.namespace,
-		options = recursive_table(options, 1),
-		load = function(name, ...)
+		options = readOnly(options.opts),
+		load = function(name)
 			local Util = require("idle.util")
 			local mod = options.namespace .. "." .. name
 			Util.debug("Looking for module " .. mod)
-			local loaded_module = Util.safe_require(mod, ...)
+			local loaded_module = Util.safe_require(mod)
 			if not loaded_module then
 				return nil
 			end
@@ -40,7 +45,7 @@ end
 
 M.setup = function(options)
 	M.options = vim.tbl_deep_extend("force", defaults, options or {})
-	M.custom_options = options or {}
+	M.options.opts = options or {}
 	setup_global_idle(M.options)
 
 	return M.options
@@ -54,5 +59,6 @@ setmetatable(M, {
 		return M.options[key]
 	end,
 })
+
 
 return M
