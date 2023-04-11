@@ -1,3 +1,4 @@
+local Config = require("idle.config")
 local M = {}
 
 function M.safe_require(module_name, opts)
@@ -48,10 +49,11 @@ function M.warn(msg, opts)
 end
 
 function M.debug(msg, opts)
-	if not require("idle").options.debug then
+	if not Config.debug == true then
 		return
 	end
 	opts = opts or {}
+	opts.level = vim.log.levels.DEBUG
 	if opts.title then
 		opts.title = "idle.nvim: " .. opts.title
 	end
@@ -69,7 +71,7 @@ function M.readOnly(t)
 	local proxy = {}
 	local mt = { -- create metatable
 		__index = t,
-		__newindex = function(t, k, v)
+		__newindex = function(_, _, _)
 			error("attempt to update a read-only table", 2)
 		end,
 	}
