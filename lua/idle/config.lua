@@ -4,7 +4,7 @@ local defaults = {
 	-- colorscheme can be a string with the colorscheme name or a function that
 	-- will load the colorscheme use this after adding the coloscheme specs to
 	-- your configuration
-	colorscheme = 'habamax',
+	colorscheme = "habamax",
 	-- the name of the folder where your custom config files are located. Default
 	-- value is `user` and will require modules from `lua/user`
 	namespace = "user",
@@ -19,7 +19,6 @@ local defaults = {
 	-- enable idle.nvim debug mode
 	debug = false,
 }
-
 
 local function setup_global_idle(options)
 	local readOnly = require("idle.util").readOnly
@@ -59,6 +58,5 @@ setmetatable(M, {
 		return M.options[key]
 	end,
 })
-
 
 return M
