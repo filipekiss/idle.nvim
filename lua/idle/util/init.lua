@@ -26,7 +26,9 @@ end
 
 function M.notify(msg, opts)
 	local lazy_notify = require("lazy.core.util").notify
-	opts.title = opts.title or "idle.nvim"
+	opts.title = opts.title
+		or Idle.options.notifications_default_title
+		or "idle.nvim"
 	lazy_notify(msg, opts)
 end
 
