@@ -96,7 +96,7 @@ require("idle").setup {
 		"autocmds",
 	},
 	-- enable idle.nvim debug mode
-	debug = false,
+	debug = false, -- you can also use IDLE_DEBUG environment var
 }
 ```
 

@@ -16,8 +16,7 @@ local defaults = {
 		"commands",
 		"autocmds",
 	},
-	-- enable idle.nvim debug mode
-	debug = false,
+	debug = vim.env.IDLE_DEBUG or false,
 }
 
 local function setup_global_idle(options)
