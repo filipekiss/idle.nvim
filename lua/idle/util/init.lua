@@ -11,10 +11,7 @@ function M.safe_require(module_name, opts)
 		if options.silent == false then
 			vim.defer_fn(function()
 				vim.schedule(function()
-					M.error(
-						"Could not load module: " .. module_name,
-						{ title = "Module Not Found" }
-					)
+					M.error(module_name, { title = "Module Not Found" })
 				end)
 			end, 1000)
 		end

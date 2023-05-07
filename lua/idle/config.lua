@@ -17,15 +17,16 @@ local defaults = {
 ---@param options IdleConfigOptions
 local function setup_global_idle(options)
 	local readOnly = require("idle.util").readOnly
+	local recursive_table = require("idle.helpers.table").recursive_table
 
 	_G.Idle = readOnly({
 		namespace = options.namespace,
-		options = readOnly(options.opts),
-		load = function(name)
+		options = recursive_table(options),
+		load = function(name, ...)
 			local Util = require("idle.util")
 			local mod = options.namespace .. "." .. name
 			Util.debug("Looking for module " .. mod)
-			local loaded_module = Util.safe_require(mod)
+			local loaded_module = Util.safe_require(mod, ...)
 			if not loaded_module then
 				return nil
 			end
@@ -39,7 +40,7 @@ end
 
 M.setup = function(options)
 	M.options = vim.tbl_deep_extend("force", defaults, options or {})
-	M.options.opts = options or {}
+	M.custom_options = options or {}
 	setup_global_idle(M.options)
 
 	return M.options
