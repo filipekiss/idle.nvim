@@ -1,15 +1,10 @@
+---@type IdleConfig
 local M = {}
 
+---@type IdleConfigOptions
 local defaults = {
-	-- colorscheme can be a string with the colorscheme name or a function that
-	-- will load the colorscheme use this after adding the coloscheme specs to
-	-- your configuration
 	colorscheme = "habamax",
-	-- the name of the folder where your custom config files are located. Default
-	-- value is `user` and will require modules from `lua/user`
 	namespace = "user",
-	-- the files that will be loaded from the namespace folder above. They will be
-	-- loaded in this order
 	source = {
 		"options",
 		"keymaps",
@@ -19,6 +14,7 @@ local defaults = {
 	debug = vim.env.IDLE_DEBUG or false,
 }
 
+---@param options IdleConfigOptions
 local function setup_global_idle(options)
 	local readOnly = require("idle.util").readOnly
 

@@ -3,6 +3,7 @@ local M = {}
 
 M.version = "0.0.0"
 
+---@param opts IdleConfigOptions
 function M.setup(opts)
 	Config.setup(opts)
 	-- check if we have the IDLE_COLORSCHEME env var set

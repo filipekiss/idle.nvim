@@ -1,0 +1,11 @@
+---@class IdleConfigOptions
+---@field colorscheme string|function #Either the colorscheme name or a function to activate the colorscheme
+---@field debug boolean #Wether to enable debug notification messages or not
+---@field namespace string #The name of the folder where your custom config files are located. Default value is `user` and will require modules from `lua/user`
+---@field notifications_default_title string #Change the default titles for notifications sent using Idle wrappers
+---@field source string[] #The files that will be loaded from the namespace folder above. They will be loaded in this order
+---@field [string] any #You can add any other key so it will be added to the Idle.options global object.
+
+---@class IdleConfig: IdleConfigOptions
+---@field setup fun(opts: IdleConfigOptions): IdleConfigOptions #Sets up the Config object
+---@field options IdleConfigOptions
