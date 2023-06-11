@@ -68,6 +68,15 @@ function M.check()
 			.. ")"
 		)
 	end
+
+	if vim.env.IDLE_COLORSCHEME then
+		vim.health.report_warn(
+			("Colorscheme has been set using IDLE_COLORSCHEME env var (`%s`)"):format(
+				vim.env.IDLE_COLORSCHEME
+			)
+		)
+	end
+
 	vim.health.report_info(message)
 	vim.health.report_info("Custom options:")
 	local opts_count = 0

@@ -172,10 +172,11 @@ end
 
 --- Make a table recursive, so you can access infinitely nested properties and
 --- always get non-nil results
----@param table table The table that you want to make recursive
----@param max_recursion number By default, the table will be infinitely recursive. You can pass a positive integer so it will be recursive only X levels deep
----@param level number This is used to handle recursion, you shouldn't need to manually set this
----@return table
+---@generic T: table
+---@param table T The table that you want to make recursive
+---@param max_recursion? number By default, the table will be infinitely recursive. You can pass a positive integer so it will be recursive only X levels deep
+---@param level? number This is used to handle recursion, you shouldn't need to manually set this
+---@return T
 function M.recursive_table(table, max_recursion, level)
 	level = level or 0
 	max_recursion = max_recursion or -1

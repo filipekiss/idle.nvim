@@ -9,3 +9,14 @@
 ---@class IdleConfig: IdleConfigOptions
 ---@field setup fun(opts: IdleConfigOptions): IdleConfigOptions #Sets up the Config object
 ---@field options IdleConfigOptions
+---@field custom_options IdleConfigOptions
+
+---@class IdleGlobal
+---@field namespace string #The current namespace being used
+---@field options IdleConfigOptions #The options passed during configuration
+---@field load fun(mod: string, ...): nil|unknown # Safe load a module. Wrapper around `safe_require`
+---@field has_plugin fun(plugin: string): boolean # Check if a plugin is installed
+---@field safe_require fun(mod: string, opts?: IdleSafeRequireOpts): nil|unknown # Safely require a module that might not exists
+
+---@class IdleSafeRequireOpts
+---@field silent boolean #If true, do not alert if module can't be loaded. Defaults to false;

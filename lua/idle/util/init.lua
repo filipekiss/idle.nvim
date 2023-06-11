@@ -1,7 +1,12 @@
 local Config = require("idle.config")
 local M = {}
 
+---Require a module that might not exists without breaking the app
+---@param module_name string
+---@param opts? IdleSafeRequireOpts
+---@return nil | unknown
 function M.safe_require(module_name, opts)
+	---@type IdleSafeRequireOpts
 	local defaults = {
 		silent = false,
 	}
@@ -66,6 +71,9 @@ end
 
 -- used to create a read only table
 -- see https://www.lua.org/pil/13.4.5.html
+---@generic T: table
+---@param t T
+---@return T
 function M.readOnly(t)
 	local proxy = {}
 	local mt = { -- create metatable

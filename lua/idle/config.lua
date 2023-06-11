@@ -19,7 +19,8 @@ local function setup_global_idle(options)
 	local readOnly = require("idle.util").readOnly
 	local recursive_table = require("idle.helpers.table").recursive_table
 
-	_G.Idle = readOnly({
+	---@type IdleGlobal
+	local global_idle = {
 		namespace = options.namespace,
 		options = recursive_table(options),
 		load = function(name, ...)
@@ -35,7 +36,8 @@ local function setup_global_idle(options)
 		end,
 		has_plugin = require("idle.helpers.plugin").is_installed,
 		safe_require = require("idle.util").safe_require,
-	})
+	}
+	_G.Idle = readOnly(global_idle)
 end
 
 M.setup = function(options)
